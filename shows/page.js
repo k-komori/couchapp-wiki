@@ -13,9 +13,9 @@ function(doc, req) {
     });
   }
   else if (req.docId) {
-    return {"code": 302, "body": "See other", "headers": {"Location": "/"}};
+    return {"code": 302, "headers": {"Location": showPath() + "/edit/" + req.docId}};
   }
   else {
-    return {"code": 302, "body": "See other", "headers": {"Location": "/" + currentPath() + "/FrontPage"}};
+    return {"code": 302, "headers": {"Location": "/" + currentPath() + "/FrontPage"}};
   }
 }
