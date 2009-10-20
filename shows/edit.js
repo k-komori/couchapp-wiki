@@ -2,18 +2,14 @@ function(doc, req) {
   // !json templates.edit
   // !code vendor/couchapp/path.js
   // !code vendor/couchapp/template.js
-  // !code vendor/wiki2html.js
 
-  if (doc) {
-    // we only show html
+  if (req.docId) {
     return template(templates.edit, {
       docid: toJSON((doc && doc._id) || null),
-      content: doc.content.wiki2html(),
+      reqid: req.docId,
+      content: toJSON((doc && doc.content) || ""),
       assets: assetPath()
     });
-  }
-  else if (req.docId) {
-    return {"code": 302, "body": "See other", "headers": {"Location": "/"}};
   }
   else {
     return {"code": 302, "body": "See other", "headers": {"Location": "/" + currentPath() + "/FrontPage"}};

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><%= docid %> の編集</title>
+<title><%= reqid %> の編集</title>
 <link rel="stylesheet" href="style/main.css" type="text/css">
 </head>
 <body>
-<h1><%= docid %> の編集</h1>
+<h1><%= reqid %> の編集</h1>
 <div>
-<form id="edit-page" action="new.html" method="post">
-<textarea name="content">
-</textarea>
-<input type="submit" value="Save &rarr;" />
+<form id="edit-page" method="post">
+<textarea name="content"></textarea>
+<input type="submit" value="Save" />
 </form>
 </div>
 <script src="/_utils/script/json2.js"></script>
@@ -23,22 +22,22 @@ $.CouchApp(function(app) {
     id: <%= docid %>,
     fields: ["content"],
     template: {
-      type : "post"
+      type : "page"
     },
     onLoad: function(doc) {
     },
     beforeSave: function(doc) {
-      if (doc.content) {
-        if (!doc.created_at) {
-          doc.created_at = new Date();
+      //if (doc.content) {
+        if (! doc._id)
+          doc._id = "<%= reqid %>";
+        doc.updated_at = new Date();
+        if (! doc.created_at) {
+          doc.created_at = doc.updated_at;
         }
-      }
-      else {
-        // delete
-      }
+      //}
     },
     success: function(resp) {
-      // redirect
+      window.location.pathname = app.showPath("page", "<%= reqid %>");
     }
   });
 });
