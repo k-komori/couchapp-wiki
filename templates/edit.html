@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title><%= docid %> の編集</title>
+<link rel="stylesheet" href="style/main.css" type="text/css">
+</head>
+<body>
+<h1><%= docid %> の編集</h1>
+<div>
+<form id="edit-page" action="new.html" method="post">
+<textarea name="content">
+</textarea>
+<input type="submit" value="Save &rarr;" />
+</form>
+</div>
+<script src="/_utils/script/json2.js"></script>
+<script src="/_utils/script/jquery.js?1.3.1"></script>
+<script src="/_utils/script/jquery.couch.js?0.9.0"></script>
+<script src="<%= assets %>/vendor/couchapp/jquery.couchapp.js"></script>
+<script type="text/javascript" charset="utf-8">
+$.CouchApp(function(app) {
+  var postForm = app.docForm("form#edit-page", {
+    id: <%= docid %>,
+    fields: ["content"],
+    template: {
+      type : "post"
+    },
+    onLoad: function(doc) {
+    },
+    beforeSave: function(doc) {
+      if (doc.content) {
+        if (!doc.created_at) {
+          doc.created_at = new Date();
+        }
+      }
+      else {
+        // delete
+      }
+    },
+    success: function(resp) {
+      // redirect
+    }
+  });
+});
+</script>
+</body>
+</html>
