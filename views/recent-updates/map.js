@@ -1,12 +1,9 @@
 function(doc) {
+  // !code vendor/dateformat.js
+
   if (doc.type == "page") {
-    var summary = (doc.html.replace(/<(.|\n)*?>/g, '').substring(0,350) + '...');
-    emit(doc.created_at, {
-      html : doc.html,
-      summary : summary,
-      title : doc.title,
-      author : doc.author,
-      created_at : doc.created_at
-    });    
+    emit(new DateFormat("yyyy/MM/dd").format(new Date(doc.updated_at)), {
+      title: doc._id,
+    });
   }
 };
