@@ -1,11 +1,11 @@
 function(doc, req) {  
-  // !json templates.page
+  // !json templates.view
   // !code vendor/couchapp/path.js
   // !code vendor/couchapp/template.js
   // !code vendor/wiki2html.js
 
   if (doc) {
-    return template(templates.page, {
+    return template(templates.view, {
       docid: req.docId,
       content: doc.content.wiki2html(),
       assets: assetPath(),

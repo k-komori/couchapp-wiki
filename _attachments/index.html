@@ -1,14 +1,68 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <title>Generated CouchApp</title>
-    <link rel="stylesheet" href="style/main.css" type="text/css">
-  </head>
-  <body>
-    <h1>Generated CouchApp</h1>
-    <p>This is a placeholder page</p>
-  </body>
-  <script src="/_utils/script/json2.js"></script>
-  <script src="/_utils/script/jquery.js?1.3.1"></script>
-  <script src="/_utils/script/jquery.couch.js?0.9.0"></script>
+<head>
+<title>Generated CouchApp</title>
+<link rel="stylesheet" href="style/main.css" type="text/css">
+</head>
+<body>
+<h1 class="app-title">couchapp-wiki</h1>
+<div id="center">
+<div id="content">
+  <ul class="tabs">
+    <li><a id="view-link" href="#">View</a></li>
+    <li><a id="edit-link" href="#">Edit</a></li>
+  </ul>
+  <div id="main"></div>
+</div>
+</div>
+<div id="side-menu">
+<div id="recent">
+<ul></ul>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/sammy-0.5.0.min.js"></script>
+<script type="text/javascript" src="/_utils/script/json2.js"></script>
+<script type="text/javascript" src="/_utils/script/jquery.couch.js?0.9.0"></script>
+<script type="text/javascript" src="vendor/couchapp/jquery.couchapp.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+  var app = new Sammy.Application(function() { with(this) {
+    element_selector = '#main';
+    before(function () {
+      $element().html('<img src="img/loading.gif" />');
+    });
+    get('#/view/:docid', function() { with(this) {
+      partial('_show/view/' + params['docid']);
+      $('a#edit-link').attr('href', '#/edit/' + params['docid']);
+      $('a#view-link').attr('href', '#/view/' + params['docid']);
+    }});
+    get('#/edit/:docid', function() { with(this) {
+      partial('_show/edit/' + params['docid']);
+      $('a#edit-link').attr('href', '#/edit/' + params['docid']);
+      $('a#view-link').attr('href', '#/view/' + params['docid']);
+    }});
+    get('#/index', function () { with(this) {
+    }});
+  }});
+  app.run('#/view/FrontPage')
+});
+
+
+$.CouchApp(function(app) {
+  app.design.view('recent-updates', {
+    success: function (json) {
+      var ul = $("#recent ul").hide();
+      $(json.rows).each(function () {
+        ul.append('<li class="date">' + this.key + '</li>');
+        ul.append('<li class="title"><a href="#/view/' + this.id + '">' + this.value.title + '</a></li>');
+      });
+      ul.fadeIn(1000);
+    }
+  });
+});
+//]]>
+</script>
+</body>
 </html>
